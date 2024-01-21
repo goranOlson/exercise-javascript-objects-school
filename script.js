@@ -1,17 +1,3 @@
-/*
-        _____TODO_____
-    removeTeacher i school vidare till subject...
-
-    Kvar:
-    - quitSubject,
-    - relegateStudent, 
-    - fireTeacher
-    ... med följdverkningar...
-
-
-
-*/
-
 const school = {
     name: "Lexicon",
     address: "Bygatan 1",
@@ -302,7 +288,7 @@ function displayAllTeachers() {
         const teacher = school.teachers[key];
         arr.push(teacher.name);
     }
-    
+
     return arr.join(', ');
 }
 
