@@ -1,3 +1,17 @@
+const grades = {
+    grades: [],
+    addGrade: function(subjectName, teacherName, studentName, grade) {
+        this.grades.push(
+            {
+                subject: subjectName,
+                teacher: teacherName,
+                student: studentName,
+                grade: grade
+            }
+        );
+    }
+}
+
 const school = {
     name: "Lexicon",
     address: "Bygatan 1",
@@ -29,6 +43,7 @@ const biology = {
     name: "Biology",
     students: [],
     teacher: {},
+    grades: grades,
     addTeacher: function(teacher) {
         this.teacher = teacher;
     },
@@ -41,6 +56,16 @@ const biology = {
     removeStudent: function(student){
         let index = this.students.findIndex(s => s.name === student.name);
         this.students.splice(index, 1);
+    },
+    getStudentNames: function() {
+        const nameList = [];
+        for (const x of this.students) {
+            nameList.push(x.name);
+        }
+        return nameList;
+    },
+    setGrade: function(teacherName, studentName, grade) {
+        this.grades.addGrade(this.name, teacherName, studentName, grade);
     }
 };
 
@@ -48,6 +73,7 @@ const mathematics = {
     name: "Mathematics",
     students: [],
     teacher: {},
+    grades: grades,
     addTeacher: function(teacher) {
         this.teacher = teacher;
     },
@@ -60,6 +86,16 @@ const mathematics = {
     removeStudent: function(student){
         let index = this.students.findIndex(s => s.name === student.name);
         this.students.splice(index, 1);
+    },
+    getStudentNames: function() {
+        const nameList = [];
+        for (const x of this.students) {
+            nameList.push(x.name);
+        }
+        return nameList;
+    },
+    setGrade: function(teacherName, studentName, grade) {
+        this.grades.addGrade(this.name, teacherName, studentName, grade);
     }
 };
 
@@ -67,6 +103,7 @@ const science = {
     name: "Science",
     students: [],
     teacher: {},
+    grades: grades,
     addTeacher: function(teacher) {
         this.teacher = teacher;
     },
@@ -79,6 +116,16 @@ const science = {
     removeStudent: function(student){
         let index = this.students.findIndex(s => s.name === student.name);
         this.students.splice(index, 1);
+    },
+    getStudentNames: function() {
+        const nameList = [];
+        for (const x of this.students) {
+            nameList.push(x.name);
+        }
+        return nameList;
+    },
+    setGrade: function(teacherName, studentName, grade) {
+        this.grades.addGrade(this.name, teacherName, studentName, grade);
     }
 }
 
@@ -217,16 +264,22 @@ const niklas = {
         this.subjects.push(subject);
         subject.addTeacher(this);
     },
-    quitSubject(subject){
+    quitSubject: function(subject) {
         let index = this.subjects.findIndex(s => s.name === subject.name);
         this.subjects.splice(index, 1);
         subject.removeTeacher(this);
     },
-    removeAllSubjects() {
+    removeAllSubjects: function() {
         let subject;
         while(this.subjects.length > 0) {
             subject = this.subjects.pop();
             subject.removeTeacher(this);
+        }
+    },
+    setStudentGrades: function(subject) {
+        const nameList = subject.getStudentNames();
+        for (const name of nameList) {
+            subject.setGrade(this.name, name, 3);
         }
     }
 };
@@ -238,20 +291,28 @@ const thomas = {
         this.subjects.push(subject);
         subject.addTeacher(this);
     },
-    quitSubject(subject){
+    quitSubject: function(subject) {
         let index = this.subjects.findIndex(s => s.name === subject.name);
         this.subjects.splice(index, 1);
         subject.removeTeacher(this);
     },
-    removeAllSubjects() {
+    removeAllSubjects: function () {
         let subject;
         while(this.subjects.length > 0) {
             subject = this.subjects.pop();
             subject.removeTeacher(this);
         }
+    },
+    setStudentGrades: function(subject) {
+        const nameList = subject.getStudentNames();
+        for (const name of nameList) {
+            subject.setGrade(this.name, name, 5);
+        }
     }
 };
 
+
+/* functions */
 function addSubjectToTeacher(subject, teacher) {
     subject.teacher = teacher;
     teacher.subjects.push(subject);
@@ -302,6 +363,8 @@ function displayAllStudentsEnlistedToSubject(subject) {
 }
 
 
+
+
 school.addTeacher(niklas);
 school.addTeacher(thomas);
 // console.log(school);
@@ -309,7 +372,8 @@ school.addTeacher(thomas);
 // Add subjects to teachers
 niklas.addSubject(biology);
 niklas.addSubject(mathematics);
-// niklas.quitSubject(biology);
+niklas.quitSubject(biology);
+
 thomas.addSubject(science);
 thomas.addSubject(biology);
 
@@ -353,3 +417,19 @@ console.log(ourTeachers);
 
 const studentsBiology = displayAllStudentsEnlistedToSubject(biology);
 console.log(studentsBiology);
+
+console.log('- biology.getStudentNames() -----------------');
+const nameList = biology.getStudentNames();
+console.log(nameList);
+
+
+console.log('- Set grades -----------------');
+niklas.setStudentGrades(mathematics);
+thomas.setStudentGrades(biology);
+thomas.setStudentGrades(science);
+
+console.log('- All grades -----------------');
+console.log(grades.grades);
+
+
+
