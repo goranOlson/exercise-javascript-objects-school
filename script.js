@@ -23,8 +23,8 @@ const school = {
         this.teachers.push(teacher);
     },
     removeTeacher: function(teacher) {
-        let index = this.students.findIndex(s => s.name === student.name);
-        this.students.splice(index, 1);
+        let index = this.teachers.findIndex(t => t.name === teacher.name);
+        this.teachers.splice(index, 1);
     },
     fireTeacher: function(teacher) {
         teacher.removeAllSubjects(teacher);
